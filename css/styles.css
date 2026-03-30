@@ -59,19 +59,29 @@ h2 { font-size: 2rem; margin-bottom: 1.5rem; color: white; border-left: 4px soli
 }
 
 .card-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; color: white; letter-spacing: -0.5px; }
-.card-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: auto; line-height: 1.4; }
+.card-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: auto; line-height: 1.4; padding-bottom: 1.5rem; }
 
-.price-container { margin-top: 1rem; margin-bottom: 1rem; }
-.price { font-size: 1.5rem; font-weight: 800; color: var(--accent); }
-.old-price { font-size: 0.95rem; text-decoration: line-through; color: var(--text-muted); margin-left: 0.5rem; font-weight: 500; }
+/* FOOTER DE LA TARJETA (PRECIO + CONTROLES) */
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: auto;
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+}
+
+.price-container { display: flex; flex-direction: column; }
+.price { font-size: 1.5rem; font-weight: 800; color: var(--accent); line-height: 1; }
+.old-price { font-size: 0.85rem; text-decoration: line-through; color: var(--text-muted); font-weight: 500; margin-top: 0.2rem; }
 
 /* CONTROLES TIPO PÍLDORA (PILL) */
 .qty-pill { 
     display: inline-flex; align-items: center; background: var(--bg-main); border: 1px solid var(--border);
-    border-radius: 999px; padding: 0.3rem; margin-top: 0.5rem; width: 120px; justify-content: space-between;
+    border-radius: 999px; padding: 0.2rem; width: 105px; justify-content: space-between;
 }
 .qty-btn { 
-    background: transparent; border: none; color: var(--text-muted); width: 30px; height: 30px; 
+    background: transparent; border: none; color: var(--text-muted); width: 28px; height: 28px; 
     border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: bold; display: flex; align-items: center; justify-content: center;
     transition: background 0.2s, color 0.2s;
 }
