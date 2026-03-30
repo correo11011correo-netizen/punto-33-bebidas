@@ -114,3 +114,50 @@ function updateStatus() {
 updateStatus();
 setInterval(updateStatus, 60000);
 renderCart();
+
+// --- LÓGICA DEL LOGO VIVO (LIQUID ENGINE V1.0) ---
+(function initLiquidLogo() {
+    let time = 0, scrollPct = 0;
+    const waveF = document.getElementById('wave-front');
+    const waveB = document.getElementById('wave-back');
+    const ice = document.getElementById('ice-cubes');
+
+    // Si por algún motivo no carga el SVG, evitar errores
+    if (!waveF || !waveB || !ice) return;
+
+    function drawWave(baseY, phase, amp) {
+        let d = `M 0 400 L 0 ${baseY}`;
+        for (let x = 0; x <= 400; x += 20) {
+            const y = baseY + Math.sin((x / 50) + time + phase) * amp;
+            d += ` L ${x} ${y}`;
+        }
+        return d + ` L 400 400 Z`;
+    }
+
+    function loopWaves() {
+        time += 0.05;
+        // Rango de llenado de 350 (vacío) a 110 (lleno)
+        const y = 350 - (240 * scrollPct); 
+        
+        waveF.setAttribute('d', drawWave(y, 0, 10));
+        waveB.setAttribute('d', drawWave(y, Math.PI, 6));
+        
+        // Hielos flotantes
+        const iceY = y - 25 + Math.sin(time) * 5;
+        ice.setAttribute('transform', `translate(0, ${iceY > 320 ? 320 : iceY})`);
+        ice.style.opacity = scrollPct < 0.05 ? 0 : 1;
+
+        requestAnimationFrame(loopWaves);
+    }
+
+    // Escuchar Scroll en toda la página
+    window.addEventListener('scroll', () => {
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        if (maxScroll > 0) {
+            scrollPct = Math.min(1, window.scrollY / maxScroll);
+        }
+    });
+
+    // Iniciar bucle
+    loopWaves();
+})();
