@@ -296,6 +296,72 @@
 </header>
 
 <main>
+    <!-- DRINK BUILDER (ARMA TU TRAGO) -->
+    <h2 style="margin-top: 0;">🍹 Arma Tu Trago</h2>
+    <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; padding: 2rem; margin-bottom: 3rem;">
+        
+        <!-- Preview Vaso (SVG) -->
+        <div style="background: #ffffff; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; position: relative;">
+            <div id="trago-svg-container" style="width: 100%; max-width: 250px; aspect-ratio: 1;"></div>
+            <div style="position: absolute; top: 1rem; left: 1rem; background: var(--accent); color: black; font-weight: bold; padding: 0.3rem 0.8rem; border-radius: 8px; font-size: 1.2rem;" id="trago-price">
+                $3.500
+            </div>
+        </div>
+
+        <!-- Controles Interactivos -->
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+            
+            <div>
+                <label style="display:block; color: var(--accent); font-weight: bold; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.85rem;">1. Base de Alcohol</label>
+                <select id="trago-base" onchange="updateTragoMixes()" style="width: 100%; padding: 0.8rem; background: var(--bg-main); color: white; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; outline: none;">
+                    <option value="vodka">Vodka Sernova</option>
+                    <option value="gin">Gin Gordon's</option>
+                    <option value="fernet">Fernet Branca</option>
+                    <option value="campari">Campari</option>
+                    <option value="ron">Ron Malibu</option>
+                </select>
+            </div>
+
+            <div>
+                <label style="display:block; color: var(--accent); font-weight: bold; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.85rem;">2. Mezcla / Sabor</label>
+                <select id="trago-mix" onchange="renderTragoSVG()" style="width: 100%; padding: 0.8rem; background: var(--bg-main); color: white; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; outline: none;"></select>
+            </div>
+
+            <div>
+                <label style="display:block; color: var(--accent); font-weight: bold; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.85rem;">3. Detalles del Vaso</label>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <label style="display:flex; align-items:center; gap:0.5rem; background: var(--bg-main); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border); cursor: pointer;">
+                        <input type="checkbox" id="trago-ice" checked onchange="renderTragoSVG()"> 🧊 Con Hielo
+                    </label>
+                    <label style="display:flex; align-items:center; gap:0.5rem; background: var(--bg-main); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border); cursor: pointer;">
+                        <input type="checkbox" id="trago-fruit" checked onchange="renderTragoSVG()"> 🍋 Con Fruta
+                    </label>
+                </div>
+            </div>
+
+            <!-- Cantidad y Botón Añadir -->
+            <div style="margin-top: auto; display: flex; gap: 1rem; align-items: center;">
+                <div style="display: flex; align-items: center; background: var(--bg-main); border: 1px solid var(--border); border-radius: 8px; overflow: hidden;">
+                    <button onclick="changeQty(-1)" style="background: none; border: none; color: white; padding: 1rem; font-size: 1.2rem; cursor: pointer; transition: background 0.2s;">-</button>
+                    <span id="trago-qty" style="width: 40px; text-align: center; font-weight: bold; font-size: 1.2rem;">1</span>
+                    <button onclick="changeQty(1)" style="background: none; border: none; color: white; padding: 1rem; font-size: 1.2rem; cursor: pointer; transition: background 0.2s;">+</button>
+                </div>
+                <button onclick="addTragoToWhatsApp()" style="flex: 1; background: var(--accent); color: black; border: none; border-radius: 8px; font-weight: 800; font-size: 1.1rem; padding: 1rem; cursor: pointer; transition: transform 0.2s;">
+                    🛒 AÑADIR ( $<span id="trago-total">3.500</span> )
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <style>
+        /* Ajustes específicos para los botones de cantidad */
+        button:hover { background-color: rgba(255,255,255,0.05); }
+        @media (max-width: 768px) {
+            .trago-builder { grid-template-columns: 1fr; }
+        }
+    </style>
+
     <h2>🔥 Ofertas de Hoy</h2>
     <div class="product-grid">
         <!-- Combo 1 -->
@@ -432,6 +498,150 @@
 </main>
 
 <script>
+    // --- LÓGICA DEL DRINK BUILDER ---
+    const tragoData = {
+        vodka: {
+            name: "Vodka Sernova", price: 3500,
+            mixes: [
+                { id: "frutilla", label: "con Jugo de Frutilla", color: "#dc2626", fruit: "#ef4444" },
+                { id: "durazno", label: "con Jugo de Durazno", color: "#fbbf24", fruit: "#ea580c" },
+                { id: "speed", label: "con Energizante", color: "#7c3aed", fruit: "#a7f3d0" }
+            ]
+        },
+        gin: {
+            name: "Gin Gordon's", price: 4200,
+            mixes: [
+                { id: "clasico", label: "Tónica Clásica", color: "#f0f9ff", fruit: "#10b981" },
+                { id: "frutos", label: "Tónica de Frutos Rojos", color: "#f472b6", fruit: "#9f1239" },
+                { id: "pepino", label: "Tónica + Pepino", color: "#ecfdf5", fruit: "#22c55e" }
+            ]
+        },
+        fernet: {
+            name: "Fernet Branca", price: 4500,
+            mixes: [
+                { id: "coca", label: "con Coca-Cola", color: "#2d1606", fruit: "#422006" }
+            ]
+        },
+        campari: {
+            name: "Campari", price: 4000,
+            mixes: [
+                { id: "orange", label: "con Jugo de Naranja", color: "#ea580c", fruit: "#fbbf24" },
+                { id: "tonic", label: "con Tónica", color: "#be123c", fruit: "#f43f5e" }
+            ]
+        },
+        ron: {
+            name: "Ron Malibu", price: 3800,
+            mixes: [
+                { id: "pina", label: "con Jugo de Piña", color: "#fcd34d", fruit: "#f59e0b" },
+                { id: "cola", label: "con Cola", color: "#451a03", fruit: "#78350f" }
+            ]
+        }
+    };
+
+    let tragoQty = 1;
+
+    function updateTragoMixes() {
+        const baseKey = document.getElementById('trago-base').value;
+        const mixSelect = document.getElementById('trago-mix');
+        mixSelect.innerHTML = "";
+        
+        tragoData[baseKey].mixes.forEach((mix, idx) => {
+            const opt = document.createElement('option');
+            opt.value = idx;
+            opt.textContent = mix.label;
+            mixSelect.appendChild(opt);
+        });
+
+        // Actualizar precio base
+        const price = tragoData[baseKey].price;
+        document.getElementById('trago-price').textContent = "$" + price.toLocaleString('es-AR');
+        
+        renderTragoSVG();
+        updateTragoTotal();
+    }
+
+    function changeQty(change) {
+        tragoQty += change;
+        if (tragoQty < 1) tragoQty = 1;
+        document.getElementById('trago-qty').textContent = tragoQty;
+        updateTragoTotal();
+    }
+
+    function updateTragoTotal() {
+        const baseKey = document.getElementById('trago-base').value;
+        const price = tragoData[baseKey].price;
+        const total = price * tragoQty;
+        document.getElementById('trago-total').textContent = total.toLocaleString('es-AR');
+    }
+
+    function renderTragoSVG() {
+        const baseKey = document.getElementById('trago-base').value;
+        const mixSelect = document.getElementById('trago-mix');
+        const mixIdx = mixSelect.value || 0;
+        
+        const mix = tragoData[baseKey].mixes[mixIdx];
+        
+        const showIce = document.getElementById('trago-ice').checked;
+        const showFruit = document.getElementById('trago-fruit').checked;
+
+        // Vaso Plástico Reutilizable Oscuro (Estilo Boliche)
+        const p = { cup: "rgba(0,0,0,0.15)", stroke: "#334155", ice: "#ffffff" };
+
+        const svg = \`
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <!-- Liquido -->
+            <path d="M 138 160 L 157 335 L 243 335 L 262 160 Z" fill="\${mix.color}" opacity="0.95"/>
+            
+            <!-- Hielos -->
+            \${showIce ? \`
+                <rect x="170" y="240" width="45" height="45" rx="8" fill="\${p.ice}" opacity="0.3" transform="rotate(15 192 262)"/>
+                <rect x="200" y="290" width="40" height="40" rx="8" fill="\${p.ice}" opacity="0.2" transform="rotate(-10 220 310)"/>
+            \` : ''}
+
+            <!-- Sorbete curvo de boliche -->
+            <path d="M 210 160 L 250 40 L 280 50" fill="none" stroke="\${p.stroke}" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="250" y1="40" x2="210" y2="160" stroke="\${mix.color}" stroke-width="2" opacity="0.3"/>
+
+            <!-- Fruta -->
+            \${showFruit ? \`
+                <circle cx="260" cy="110" r="35" fill="none" stroke="\${mix.fruit}" stroke-width="6" opacity="0.8"/>
+                <line x1="260" y1="75" x2="260" y2="145" stroke="\${mix.fruit}" stroke-width="2" opacity="0.5"/>
+            \` : ''}
+
+            <!-- El Vaso -->
+            <path d="M 130 80 L 155 340 A 15 15 0 0 0 170 355 L 230 355 A 15 15 0 0 0 245 340 L 270 80" fill="\${p.cup}" stroke="\${p.stroke}" stroke-width="8" stroke-linejoin="round"/>
+            
+            <!-- Etiqueta Punto 33 -->
+            <rect x="135" y="190" width="130" height="45" rx="5" fill="#000" stroke="\${p.stroke}" stroke-width="2"/>
+            <text x="200" y="222" font-family="Impact" font-size="30" fill="\${mix.color}" text-anchor="middle">PUNTO 33</text>
+        </svg>\`;
+
+        document.getElementById('trago-svg-container').innerHTML = svg;
+    }
+
+    function addTragoToWhatsApp() {
+        const baseKey = document.getElementById('trago-base').value;
+        const mixIdx = document.getElementById('trago-mix').value;
+        const baseName = tragoData[baseKey].name;
+        const mixName = tragoData[baseKey].mixes[mixIdx].label;
+        
+        const ice = document.getElementById('trago-ice').checked ? 'Con hielo' : 'Sin hielo';
+        const fruit = document.getElementById('trago-fruit').checked ? 'Con fruta' : 'Sin fruta';
+        
+        const total = tragoData[baseKey].price * tragoQty;
+
+        const msg = \`🍹 Hola Punto 33! Quiero pedir:
+\${tragoQty}x \${baseName} \${mixName}
+Detalles: \${ice}, \${fruit}
+Total aprox: $\${total.toLocaleString('es-AR')}\`;
+
+        const url = \`https://wa.me/5491151623621?text=\${encodeURIComponent(msg)}\`;
+        window.open(url, '_blank');
+    }
+
+    // Inicializar builder al cargar
+    updateTragoMixes();
+
     // Lógica para determinar si está abierto o cerrado
     function updateStatus() {
         const statusBadge = document.getElementById('store-status');
