@@ -1,289 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- ANTI CACHE TAGS -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Punto 33 | Bebidas y Más</title>
-    <style>
-        :root {
-            --bg-main: #0f172a;
-            --bg-card: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #10b981; /* Verde esmeralda para destacar */
-            --accent-hover: #059669;
-            --danger: #ef4444;
-            --border: #334155;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            line-height: 1.6;
-        }
-
-        /* HEADER & STATUS */
-        header {
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            letter-spacing: -1px;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logo span {
-            color: var(--accent);
-        }
-
-        .status-badge {
-            padding: 0.4rem 1rem;
-            border-radius: 999px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .status-open {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--accent);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-
-        .status-closed {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-
-        .status-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-
-        .status-open .status-indicator {
-            background-color: var(--accent);
-            box-shadow: 0 0 8px var(--accent);
-            animation: pulse-green 2s infinite;
-        }
-
-        .status-closed .status-indicator {
-            background-color: var(--danger);
-            box-shadow: 0 0 8px var(--danger);
-        }
-
-        @keyframes pulse-green {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-        }
-
-        /* MAIN LAYOUT */
-        main {
-            padding: 2rem 5%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        h2 {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            color: white;
-            border-left: 4px solid var(--accent);
-            padding-left: 1rem;
-        }
-
-        /* GRID CARDS */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .card {
-            background: var(--bg-card);
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s;
-            position: relative;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            border-color: #475569;
-        }
-
-        .badge-offer {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: #f59e0b;
-            color: #000;
-            font-weight: bold;
-            padding: 0.25rem 0.75rem;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            z-index: 10;
-        }
-
-        .card-img {
-            height: 200px;
-            background: linear-gradient(45deg, #1e293b, #334155);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: rgba(255,255,255,0.1);
-        }
-
-        .card-content {
-            padding: 1.5rem;
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: white;
-        }
-
-        .card-desc {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .price {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        .old-price {
-            font-size: 0.9rem;
-            text-decoration: line-through;
-            color: var(--text-muted);
-            margin-right: 0.5rem;
-        }
-
-        .btn-add {
-            background: var(--border);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background 0.2s;
-        }
-
-        .btn-add:hover {
-            background: var(--accent);
-            color: #000;
-        }
-
-        /* INFO SECTION */
-        .info-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            background: var(--bg-card);
-            padding: 2rem;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-        }
-
-        .info-box h3 {
-            color: white;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .info-list {
-            list-style: none;
-        }
-
-        .info-list li {
-            margin-bottom: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .payment-icons {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-            font-size: 2rem;
-        }
-
-        .btn-whatsapp {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: #25D366;
-            color: #000;
-            text-decoration: none;
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-top: 1rem;
-            transition: transform 0.2s;
-            width: 100%;
-            justify-content: center;
-        }
-
-        .btn-whatsapp:hover {
-            transform: scale(1.02);
-        }
-
-        @media (max-width: 768px) {
-            header { flex-direction: column; gap: 1rem; }
-            h2 { font-size: 1.5rem; }
-        }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
@@ -296,24 +20,22 @@
 </header>
 
 <main>
-    <!-- DRINK BUILDER (ARMA TU TRAGO) -->
+    <!-- DRINK BUILDER -->
     <h2 style="margin-top: 0;">🍹 Arma Tu Trago</h2>
-    <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; padding: 2rem; margin-bottom: 3rem;">
+    <div class="builder-container">
         
         <!-- Preview Vaso (SVG) -->
-        <div style="background: #ffffff; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; position: relative;">
-            <div id="trago-svg-container" style="width: 100%; max-width: 250px; aspect-ratio: 1;"></div>
-            <div style="position: absolute; top: 1rem; left: 1rem; background: var(--accent); color: black; font-weight: bold; padding: 0.3rem 0.8rem; border-radius: 8px; font-size: 1.2rem;" id="trago-price">
-                $3.500
-            </div>
+        <div class="builder-preview">
+            <div id="trago-svg-container"></div>
+            <div class="builder-price-badge" id="trago-price">$3.500</div>
         </div>
 
         <!-- Controles Interactivos -->
-        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <div class="builder-controls">
             
             <div>
-                <label style="display:block; color: var(--accent); font-weight: bold; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.85rem;">1. Base de Alcohol</label>
-                <select id="trago-base" onchange="updateTragoMixes()" style="width: 100%; padding: 0.8rem; background: var(--bg-main); color: white; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; outline: none;">
+                <label class="section-title">1. Base de Alcohol</label>
+                <select id="trago-base" onchange="updateTragoMixes()">
                     <option value="vodka">Vodka Sernova</option>
                     <option value="gin">Gin Gordon's</option>
                     <option value="fernet">Fernet Branca</option>
@@ -323,44 +45,32 @@
             </div>
 
             <div>
-                <label style="display:block; color: var(--accent); font-weight: bold; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.85rem;">2. Mezcla / Sabor</label>
-                <select id="trago-mix" onchange="renderTragoSVG()" style="width: 100%; padding: 0.8rem; background: var(--bg-main); color: white; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; outline: none;"></select>
+                <label class="section-title">2. Mezcla / Sabor</label>
+                <select id="trago-mix" onchange="renderTragoSVG()"></select>
             </div>
 
             <div>
-                <label style="display:block; color: var(--accent); font-weight: bold; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.85rem;">3. Detalles del Vaso</label>
-                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                    <label style="display:flex; align-items:center; gap:0.5rem; background: var(--bg-main); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border); cursor: pointer;">
-                        <input type="checkbox" id="trago-ice" checked onchange="renderTragoSVG()"> 🧊 Con Hielo
-                    </label>
-                    <label style="display:flex; align-items:center; gap:0.5rem; background: var(--bg-main); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border); cursor: pointer;">
-                        <input type="checkbox" id="trago-fruit" checked onchange="renderTragoSVG()"> 🍋 Con Fruta
-                    </label>
+                <label class="section-title">3. Detalles del Vaso</label>
+                <div class="builder-options-row">
+                    <label><input type="checkbox" id="trago-ice" checked onchange="renderTragoSVG()"> 🧊 Con Hielo</label>
+                    <label><input type="checkbox" id="trago-fruit" checked onchange="renderTragoSVG()"> 🍋 Con Fruta</label>
                 </div>
             </div>
 
             <!-- Cantidad y Botón Añadir -->
-            <div style="margin-top: auto; display: flex; gap: 1rem; align-items: center;">
-                <div style="display: flex; align-items: center; background: var(--bg-main); border: 1px solid var(--border); border-radius: 8px; overflow: hidden;">
-                    <button onclick="changeQty(-1)" style="background: none; border: none; color: white; padding: 1rem; font-size: 1.2rem; cursor: pointer; transition: background 0.2s;">-</button>
-                    <span id="trago-qty" style="width: 40px; text-align: center; font-weight: bold; font-size: 1.2rem;">1</span>
-                    <button onclick="changeQty(1)" style="background: none; border: none; color: white; padding: 1rem; font-size: 1.2rem; cursor: pointer; transition: background 0.2s;">+</button>
+            <div class="builder-action-row">
+                <div class="builder-qty">
+                    <button onclick="changeQty(-1)">-</button>
+                    <span id="trago-qty">1</span>
+                    <button onclick="changeQty(1)">+</button>
                 </div>
-                <button onclick="addTragoToWhatsApp()" style="flex: 1; background: var(--accent); color: black; border: none; border-radius: 8px; font-weight: 800; font-size: 1.1rem; padding: 1rem; cursor: pointer; transition: transform 0.2s;">
+                <button onclick="addTragoToWhatsApp()" class="builder-btn-add">
                     🛒 AÑADIR ( $<span id="trago-total">3.500</span> )
                 </button>
             </div>
 
         </div>
     </div>
-
-    <style>
-        /* Ajustes específicos para los botones de cantidad */
-        button:hover { background-color: rgba(255,255,255,0.05); }
-        @media (max-width: 768px) {
-            .trago-builder { grid-template-columns: 1fr; }
-        }
-    </style>
 
     <h2>🔥 Ofertas de Hoy</h2>
     <div class="product-grid">
@@ -371,12 +81,7 @@
             <div class="card-content">
                 <h3 class="card-title">Combo Previa Pro</h3>
                 <p class="card-desc">1 Fernet Branca 750ml + 2 Coca-Cola 2.25L + Hielo</p>
-                <div class="card-footer">
-                    <div>
-                        <span class="old-price">$18.500</span>
-                        <div class="price">$14.800</div>
-                    </div>
-                </div>
+                <div class="price">$14.800 <span class="old-price">$18.500</span></div>
             </div>
         </div>
 
@@ -387,11 +92,7 @@
             <div class="card-content">
                 <h3 class="card-title">Pack Cerveza Premium</h3>
                 <p class="card-desc">6x Cerveza Corona 330ml + Snack a elección</p>
-                <div class="card-footer">
-                    <div>
-                        <div class="price">$9.500</div>
-                    </div>
-                </div>
+                <div class="price">$9.500</div>
             </div>
         </div>
         
@@ -401,11 +102,7 @@
             <div class="card-content">
                 <h3 class="card-title">Combo Campari</h3>
                 <p class="card-desc">1 Campari 750ml + 3 Jugos de Naranja Cepita</p>
-                <div class="card-footer">
-                    <div>
-                        <div class="price">$11.200</div>
-                    </div>
-                </div>
+                <div class="price">$11.200</div>
             </div>
         </div>
     </div>
@@ -446,32 +143,24 @@
                 <li>📱 Transferencia Bancaria / CVU</li>
                 <li>💳 MercadoPago (QR o Link de pago)</li>
             </ul>
-            <div class="payment-icons">
-                🏦 📱 💵
-            </div>
         </div>
 
         <div class="info-box">
             <h3>🛵 ¿Cómo hacer tu pedido?</h3>
             <ul class="info-list">
-                <li>1️⃣ Revisa nuestras ofertas o catálogo.</li>
+                <li>1️⃣ Revisa nuestras ofertas o arma tu trago.</li>
                 <li>2️⃣ Toca el botón de WhatsApp abajo.</li>
-                <li>3️⃣ Envíanos tu lista, dirección y método de pago.</li>
-                <li>4️⃣ ¡Recíbelo en menos de 30 minutos!</li>
+                <li>3️⃣ ¡Recíbelo en menos de 30 minutos!</li>
             </ul>
-            <a href="https://wa.me/5491151623621?text=hola%20punto%2033" target="_blank" class="btn-whatsapp">
-                💬 Hacer pedido por WhatsApp
-            </a>
+            <a href="https://wa.me/5491151623621?text=hola%20punto%2033" target="_blank" class="btn-whatsapp">💬 Hacer pedido general</a>
         </div>
 
         <div class="info-box">
             <h3 style="color: #c13584;">📸 Síguenos en Instagram</h3>
             <div style="background: var(--bg-main); border-radius: 12px; padding: 1rem; border: 1px solid var(--border); margin-top: 1rem;">
-                
-                <!-- Perfil Header -->
                 <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
                     <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); display: flex; align-items: center; justify-content: center; padding: 3px; flex-shrink: 0;">
-                        <div style="width: 100%; height: 100%; background: var(--bg-main); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; overflow: hidden;">🍻</div>
+                        <div style="width: 100%; height: 100%; background: var(--bg-main); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">🍻</div>
                     </div>
                     <div style="flex: 1;">
                         <h4 style="margin: 0; color: white; font-size: 1.1rem;">@punto_33</h4>
@@ -479,7 +168,6 @@
                     </div>
                 </div>
 
-                <!-- Grilla de Fotos (Simulación de Feed) -->
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; border-radius: 8px; overflow: hidden; margin-bottom: 1rem;">
                     <div style="aspect-ratio: 1; background: url('https://images.unsplash.com/photo-1615332579037-3c44b3660b53?auto=format&fit=crop&w=200&q=80') center/cover;"></div>
                     <div style="aspect-ratio: 1; background: url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=200&q=80') center/cover;"></div>
@@ -490,183 +178,15 @@
                 </div>
 
                 <a href="https://www.instagram.com/punto_33?igsh=MXBzMm52dmd6bmRpMA==" target="_blank" class="btn-whatsapp" style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white; margin-top: 0;">
-                    Ver perfil en Instagram
+                    Ver perfil
                 </a>
             </div>
         </div>
     </div>
 </main>
 
-<script>
-    // --- LÓGICA DEL DRINK BUILDER ---
-    const tragoData = {
-        vodka: {
-            name: "Vodka Sernova", price: 3500,
-            mixes: [
-                { id: "frutilla", label: "con Jugo de Frutilla", color: "#dc2626", fruit: "#ef4444" },
-                { id: "durazno", label: "con Jugo de Durazno", color: "#fbbf24", fruit: "#ea580c" },
-                { id: "speed", label: "con Energizante", color: "#7c3aed", fruit: "#a7f3d0" }
-            ]
-        },
-        gin: {
-            name: "Gin Gordon's", price: 4200,
-            mixes: [
-                { id: "clasico", label: "Tónica Clásica", color: "#f0f9ff", fruit: "#10b981" },
-                { id: "frutos", label: "Tónica de Frutos Rojos", color: "#f472b6", fruit: "#9f1239" },
-                { id: "pepino", label: "Tónica + Pepino", color: "#ecfdf5", fruit: "#22c55e" }
-            ]
-        },
-        fernet: {
-            name: "Fernet Branca", price: 4500,
-            mixes: [
-                { id: "coca", label: "con Coca-Cola", color: "#2d1606", fruit: "#422006" }
-            ]
-        },
-        campari: {
-            name: "Campari", price: 4000,
-            mixes: [
-                { id: "orange", label: "con Jugo de Naranja", color: "#ea580c", fruit: "#fbbf24" },
-                { id: "tonic", label: "con Tónica", color: "#be123c", fruit: "#f43f5e" }
-            ]
-        },
-        ron: {
-            name: "Ron Malibu", price: 3800,
-            mixes: [
-                { id: "pina", label: "con Jugo de Piña", color: "#fcd34d", fruit: "#f59e0b" },
-                { id: "cola", label: "con Cola", color: "#451a03", fruit: "#78350f" }
-            ]
-        }
-    };
-
-    let tragoQty = 1;
-
-    function updateTragoMixes() {
-        const baseKey = document.getElementById('trago-base').value;
-        const mixSelect = document.getElementById('trago-mix');
-        mixSelect.innerHTML = "";
-        
-        tragoData[baseKey].mixes.forEach((mix, idx) => {
-            const opt = document.createElement('option');
-            opt.value = idx;
-            opt.textContent = mix.label;
-            mixSelect.appendChild(opt);
-        });
-
-        // Actualizar precio base
-        const price = tragoData[baseKey].price;
-        document.getElementById('trago-price').textContent = "$" + price.toLocaleString('es-AR');
-        
-        renderTragoSVG();
-        updateTragoTotal();
-    }
-
-    function changeQty(change) {
-        tragoQty += change;
-        if (tragoQty < 1) tragoQty = 1;
-        document.getElementById('trago-qty').textContent = tragoQty;
-        updateTragoTotal();
-    }
-
-    function updateTragoTotal() {
-        const baseKey = document.getElementById('trago-base').value;
-        const price = tragoData[baseKey].price;
-        const total = price * tragoQty;
-        document.getElementById('trago-total').textContent = total.toLocaleString('es-AR');
-    }
-
-    function renderTragoSVG() {
-        const baseKey = document.getElementById('trago-base').value;
-        const mixSelect = document.getElementById('trago-mix');
-        const mixIdx = mixSelect.value || 0;
-        
-        const mix = tragoData[baseKey].mixes[mixIdx];
-        
-        const showIce = document.getElementById('trago-ice').checked;
-        const showFruit = document.getElementById('trago-fruit').checked;
-
-        // Vaso Plástico Reutilizable Oscuro (Estilo Boliche)
-        const p = { cup: "rgba(0,0,0,0.15)", stroke: "#334155", ice: "#ffffff" };
-
-        const svg = \`
-        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-            <!-- Liquido -->
-            <path d="M 138 160 L 157 335 L 243 335 L 262 160 Z" fill="\${mix.color}" opacity="0.95"/>
-            
-            <!-- Hielos -->
-            \${showIce ? \`
-                <rect x="170" y="240" width="45" height="45" rx="8" fill="\${p.ice}" opacity="0.3" transform="rotate(15 192 262)"/>
-                <rect x="200" y="290" width="40" height="40" rx="8" fill="\${p.ice}" opacity="0.2" transform="rotate(-10 220 310)"/>
-            \` : ''}
-
-            <!-- Sorbete curvo de boliche -->
-            <path d="M 210 160 L 250 40 L 280 50" fill="none" stroke="\${p.stroke}" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-            <line x1="250" y1="40" x2="210" y2="160" stroke="\${mix.color}" stroke-width="2" opacity="0.3"/>
-
-            <!-- Fruta -->
-            \${showFruit ? \`
-                <circle cx="260" cy="110" r="35" fill="none" stroke="\${mix.fruit}" stroke-width="6" opacity="0.8"/>
-                <line x1="260" y1="75" x2="260" y2="145" stroke="\${mix.fruit}" stroke-width="2" opacity="0.5"/>
-            \` : ''}
-
-            <!-- El Vaso -->
-            <path d="M 130 80 L 155 340 A 15 15 0 0 0 170 355 L 230 355 A 15 15 0 0 0 245 340 L 270 80" fill="\${p.cup}" stroke="\${p.stroke}" stroke-width="8" stroke-linejoin="round"/>
-            
-            <!-- Etiqueta Punto 33 -->
-            <rect x="135" y="190" width="130" height="45" rx="5" fill="#000" stroke="\${p.stroke}" stroke-width="2"/>
-            <text x="200" y="222" font-family="Impact" font-size="30" fill="\${mix.color}" text-anchor="middle">PUNTO 33</text>
-        </svg>\`;
-
-        document.getElementById('trago-svg-container').innerHTML = svg;
-    }
-
-    function addTragoToWhatsApp() {
-        const baseKey = document.getElementById('trago-base').value;
-        const mixIdx = document.getElementById('trago-mix').value;
-        const baseName = tragoData[baseKey].name;
-        const mixName = tragoData[baseKey].mixes[mixIdx].label;
-        
-        const ice = document.getElementById('trago-ice').checked ? 'Con hielo' : 'Sin hielo';
-        const fruit = document.getElementById('trago-fruit').checked ? 'Con fruta' : 'Sin fruta';
-        
-        const total = tragoData[baseKey].price * tragoQty;
-
-        const msg = \`🍹 Hola Punto 33! Quiero pedir:
-\${tragoQty}x \${baseName} \${mixName}
-Detalles: \${ice}, \${fruit}
-Total aprox: $\${total.toLocaleString('es-AR')}\`;
-
-        const url = \`https://wa.me/5491151623621?text=\${encodeURIComponent(msg)}\`;
-        window.open(url, '_blank');
-    }
-
-    // Inicializar builder al cargar
-    updateTragoMixes();
-
-    // Lógica para determinar si está abierto o cerrado
-    function updateStatus() {
-        const statusBadge = document.getElementById('store-status');
-        const statusText = document.getElementById('status-text');
-        
-        const now = new Date();
-        const hour = now.getHours();
-        
-        // Horario de ejemplo: Abierto de 19:00 a 04:00 (del día siguiente)
-        // Lógica: Si la hora es mayor o igual a 19 O menor a 4.
-        const isOpen = hour >= 19 || hour < 4;
-
-        if (isOpen) {
-            statusBadge.className = 'status-badge status-open';
-            statusText.textContent = 'ABIERTO AHORA';
-        } else {
-            statusBadge.className = 'status-badge status-closed';
-            statusText.textContent = 'CERRADO (Abre 19:00hs)';
-        }
-    }
-
-    // Ejecutar al cargar y actualizar cada minuto
-    updateStatus();
-    setInterval(updateStatus, 60000);
-</script>
+<script src="js/app.js"></script>
+<script src="js/drink-builder.js"></script>
 
 </body>
 </html>
