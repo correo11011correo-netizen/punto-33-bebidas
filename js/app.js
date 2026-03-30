@@ -1,6 +1,5 @@
 let cart = {};
 
-// Productos base (IDs deben coincidir con los del HTML)
 const products = {
     combo1: { name: "Combo Previa Pro", price: 14800 },
     combo2: { name: "Pack Cerveza Premium", price: 9500 },
@@ -15,7 +14,6 @@ function updateQty(id, delta) {
     cart[id] += delta;
     if (cart[id] < 0) cart[id] = 0;
     
-    // Actualizar visualmente el número en la tarjeta
     document.getElementById(`qty-${id}`).textContent = cart[id];
     renderCart();
 }
@@ -23,56 +21,74 @@ function updateQty(id, delta) {
 function renderCart() {
     const container = document.getElementById('cart-items');
     const totalEl = document.getElementById('cart-total-value');
+    const discountMsg = document.getElementById('discount-msg');
+    
     container.innerHTML = "";
-    let total = 0;
+    let subtotal = 0;
 
     Object.keys(cart).forEach(id => {
         if (cart[id] > 0) {
             const p = products[id];
-            const subtotal = p.price * cart[id];
-            total += subtotal;
+            const itemTotal = p.price * cart[id];
+            subtotal += itemTotal;
 
             const div = document.createElement('div');
             div.className = "cart-item";
             div.innerHTML = `
-                <span><b>${cart[id]}x</b> ${p.name}</span>
-                <span>$${subtotal.toLocaleString('es-AR')}</span>
+                <div><span class="cart-item-qty">${cart[id]}x</span> <b>${p.name}</b></div>
+                <span>$${itemTotal.toLocaleString('es-AR')}</span>
             `;
             container.appendChild(div);
         }
     });
 
-    totalEl.textContent = total.toLocaleString('es-AR');
+    // Lógica del 10% de Descuento si es efectivo
+    const isCash = document.getElementById('pay-cash').checked;
+    let finalTotal = subtotal;
+
+    if (isCash && subtotal > 0) {
+        finalTotal = subtotal * 0.9;
+        discountMsg.style.display = "block";
+    } else {
+        discountMsg.style.display = "none";
+    }
+
+    totalEl.textContent = finalTotal.toLocaleString('es-AR');
     
-    // Mostrar/Ocultar sección carrito si está vacío
     const cartSec = document.getElementById('cart-section');
-    cartSec.style.display = total > 0 ? "block" : "none";
+    cartSec.style.display = subtotal > 0 ? "block" : "none";
 }
+
+// Agregar listeners a los radios de pago para que el total se actualice en vivo
+document.querySelectorAll('input[name="payment"]').forEach(radio => {
+    radio.addEventListener('change', renderCart);
+});
 
 function sendOrder() {
     const phoneNumber = "5491151623621";
     let itemsText = "";
-    let total = 0;
+    let subtotal = 0;
 
     Object.keys(cart).forEach(id => {
         if (cart[id] > 0) {
             itemsText += `• ${cart[id]}x ${products[id].name}\n`;
-            total += products[id].price * cart[id];
+            subtotal += products[id].price * cart[id];
         }
     });
 
-    if (total === 0) {
-        alert("¡El carrito está vacío!");
-        return;
-    }
+    if (subtotal === 0) return;
 
     const payment = document.querySelector('input[name="payment"]:checked')?.value || "No especificado";
+    const isCash = payment === "Efectivo";
+    const finalTotal = isCash ? subtotal * 0.9 : subtotal;
+
+    let discountText = isCash ? `\n🎁 *Descuento 10% Efectivo Aplicado*` : "";
 
     const msg = `🍻 *NUEVO PEDIDO - PUNTO 33* 🍻
 --------------------------------
-${itemsText}
-💰 *TOTAL: $${total.toLocaleString('es-AR')}*
---------------------------------
+${itemsText}--------------------------------
+💰 *TOTAL: $${finalTotal.toLocaleString('es-AR')}* ${discountText}
+
 💳 *Medio de Pago:* ${payment}
 
 📍 _Mi dirección es:_ `;
@@ -81,7 +97,6 @@ ${itemsText}
     window.open(url, '_blank');
 }
 
-// Lógica de estado Abierto/Cerrado
 function updateStatus() {
     const statusBadge = document.getElementById('store-status');
     const statusText = document.getElementById('status-text');
