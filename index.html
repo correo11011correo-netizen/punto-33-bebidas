@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Punto 33 | Bebidas y Más</title>
+    <style>
+        :root {
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #10b981; /* Verde esmeralda para destacar */
+            --accent-hover: #059669;
+            --danger: #ef4444;
+            --border: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* HEADER & STATUS */
+        header {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .status-badge {
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .status-open {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .status-closed {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-open .status-indicator {
+            background-color: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+            animation: pulse-green 2s infinite;
+        }
+
+        .status-closed .status-indicator {
+            background-color: var(--danger);
+            box-shadow: 0 0 8px var(--danger);
+        }
+
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        /* MAIN LAYOUT */
+        main {
+            padding: 2rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            border-left: 4px solid var(--accent);
+            padding-left: 1rem;
+        }
+
+        /* GRID CARDS */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            border-color: #475569;
+        }
+
+        .badge-offer {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #f59e0b;
+            color: #000;
+            font-weight: bold;
+            padding: 0.25rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 10;
+        }
+
+        .card-img {
+            height: 200px;
+            background: linear-gradient(45deg, #1e293b, #334155);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: rgba(255,255,255,0.1);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .card-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .old-price {
+            font-size: 0.9rem;
+            text-decoration: line-through;
+            color: var(--text-muted);
+            margin-right: 0.5rem;
+        }
+
+        .btn-add {
+            background: var(--border);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn-add:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        /* INFO SECTION */
+        .info-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .info-box h3 {
+            color: white;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-list {
+            list-style: none;
+        }
+
+        .info-list li {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .payment-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            font-size: 2rem;
+        }
+
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #25D366;
+            color: #000;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            transition: transform 0.2s;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-whatsapp:hover {
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 768px) {
+            header { flex-direction: column; gap: 1rem; }
+            h2 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">🍻 Punto<span>33</span></div>
+    <div id="store-status" class="status-badge status-closed">
+        <div class="status-indicator"></div>
+        <span id="status-text">Cargando estado...</span>
+    </div>
+</header>
+
+<main>
+    <h2>🔥 Ofertas de Hoy</h2>
+    <div class="product-grid">
+        <!-- Combo 1 -->
+        <div class="card">
+            <div class="badge-offer">-20% OFF</div>
+            <div class="card-img">🥃🥤</div>
+            <div class="card-content">
+                <h3 class="card-title">Combo Previa Pro</h3>
+                <p class="card-desc">1 Fernet Branca 750ml + 2 Coca-Cola 2.25L + Hielo</p>
+                <div class="card-footer">
+                    <div>
+                        <span class="old-price">$18.500</span>
+                        <div class="price">$14.800</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Combo 2 -->
+        <div class="card">
+            <div class="badge-offer">PROMO</div>
+            <div class="card-img">🍺🧊</div>
+            <div class="card-content">
+                <h3 class="card-title">Pack Cerveza Premium</h3>
+                <p class="card-desc">6x Cerveza Corona 330ml + Snack a elección</p>
+                <div class="card-footer">
+                    <div>
+                        <div class="price">$9.500</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Combo 3 -->
+        <div class="card">
+            <div class="card-img">🍾🍊</div>
+            <div class="card-content">
+                <h3 class="card-title">Combo Campari</h3>
+                <p class="card-desc">1 Campari 750ml + 3 Jugos de Naranja Cepita</p>
+                <div class="card-footer">
+                    <div>
+                        <div class="price">$11.200</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2>🛒 Catálogo Destacado</h2>
+    <div class="product-grid">
+        <div class="card">
+            <div class="card-img">🍷</div>
+            <div class="card-content">
+                <h3 class="card-title">Vino Rutini Malbec</h3>
+                <p class="card-desc">Botella 750ml - Bodega La Rural</p>
+                <div class="price">$15.000</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-img">🍸</div>
+            <div class="card-content">
+                <h3 class="card-title">Gin Bombay Sapphire</h3>
+                <p class="card-desc">Botella 750ml</p>
+                <div class="price">$22.000</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-img">🧊</div>
+            <div class="card-content">
+                <h3 class="card-title">Bolsa de Hielo</h3>
+                <p class="card-desc">Hielo en rolito 2KG</p>
+                <div class="price">$1.500</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <div class="info-box">
+            <h3>💳 Métodos de Pago</h3>
+            <ul class="info-list">
+                <li>💸 Efectivo al recibir (10% descuento extra)</li>
+                <li>📱 Transferencia Bancaria / CVU</li>
+                <li>💳 MercadoPago (QR o Link de pago)</li>
+            </ul>
+            <div class="payment-icons">
+                🏦 📱 💵
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>🛵 ¿Cómo hacer tu pedido?</h3>
+            <ul class="info-list">
+                <li>1️⃣ Revisa nuestras ofertas o catálogo.</li>
+                <li>2️⃣ Toca el botón de WhatsApp abajo.</li>
+                <li>3️⃣ Envíanos tu lista, dirección y método de pago.</li>
+                <li>4️⃣ ¡Recíbelo en menos de 30 minutos!</li>
+            </ul>
+            <a href="https://wa.me/5491100000000?text=Hola%20Punto%2033!%20Quiero%20hacer%20un%20pedido." target="_blank" class="btn-whatsapp">
+                💬 Hacer pedido por WhatsApp
+            </a>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Lógica para determinar si está abierto o cerrado
+    function updateStatus() {
+        const statusBadge = document.getElementById('store-status');
+        const statusText = document.getElementById('status-text');
+        
+        const now = new Date();
+        const hour = now.getHours();
+        
+        // Horario de ejemplo: Abierto de 19:00 a 04:00 (del día siguiente)
+        // Lógica: Si la hora es mayor o igual a 19 O menor a 4.
+        const isOpen = hour >= 19 || hour < 4;
+
+        if (isOpen) {
+            statusBadge.className = 'status-badge status-open';
+            statusText.textContent = 'ABIERTO AHORA';
+        } else {
+            statusBadge.className = 'status-badge status-closed';
+            statusText.textContent = 'CERRADO (Abre 19:00hs)';
+        }
+    }
+
+    // Ejecutar al cargar y actualizar cada minuto
+    updateStatus();
+    setInterval(updateStatus, 60000);
+</script>
+
+</body>
+</html>
