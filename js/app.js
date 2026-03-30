@@ -21,3 +21,21 @@ function updateStatus() {
 // Ejecutar al cargar y actualizar cada minuto
 updateStatus();
 setInterval(updateStatus, 60000);
+
+// --- LÓGICA DE CARRITO SIMPLE (WHATSAPP) ---
+function buyProduct(title, desc, price) {
+    const phoneNumber = "5491151623621";
+    
+    // Generar resumen estilizado
+    const msg = `🍻 *Hola Punto 33! Quiero pedir:*
+    
+🛒 *${title}*
+📝 Detalles: ${desc}
+💰 *Total: $${price.toLocaleString('es-AR')}*
+
+📍 _Mi dirección es:_ 
+💳 _Mi método de pago es (Efectivo/Transferencia/MercadoPago):_ `;
+
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+}
